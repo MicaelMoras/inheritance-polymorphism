@@ -22,12 +22,17 @@ Encapsulation: attributes are private and accessed through getters and setters.
   Project structure:
   
 inheritance-polymorphism/
+
 ├── TaxPayer.java     # abstract class (nome, rendaAnual, tax())
+
 ├── Individuals.java  # individual taxpayer (gastosComSaude)
+
 ├── Company.java      # company taxpayer (numeroDoFuncionario)
+
 └── Program.java      # main class (input and output)
 
    Class diagram:
+   
 1. abstract
 TaxPayer
 -String nome
@@ -85,10 +90,14 @@ Requirement: the JDK (Java Development Kit) installed.
 Clone the repository:
 bash
    git clone https://github.com/MicaelMoras/inheritance-polymorphism.git
+   
 With IntelliJ IDEA: open the folder, find the Program class and run its main method. From the terminal: inside the project folder, run:
+
 bash
+
    javac -d out TaxPayer.java Company.java Individuals.java Program.java
    java -cp out HherancaePpolimofirmo.Program
+   
 Enter the number of taxpayers and, for each one, the type (i for individual, c for company), the name, the annual income and the extra data (health expenditures or number of employees).
 
 Note: the name is read with Scanner.next(), so type it without spaces (for example, Acme or John).
@@ -99,5 +108,7 @@ Java
 Author
 
 Micael — @MicaelMoras
+
 GitHub: github.com/MicaelMoras
+
 LinkedIn: https://www.linkedin.com/in/micael-moras-ab70b036b/
