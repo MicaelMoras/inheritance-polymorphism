@@ -1,114 +1,116 @@
-   Inheritance and Polymorphism in Java: Tax Calculation:
+ # Tax Calculator
 
-An Object-Oriented Programming (OOP) exercise in Java that calculates the tax paid by individuals and companies, using inheritance, an abstract class and polymorphism.
+Java application that calculates the taxes paid by individuals and companies based on their annual income, healthcare expenses, and number of employees.
 
-The program reads the data of several taxpayers, calculates each one's tax and prints the total amount collected.
+Built as a study project on **inheritance**, **abstract classes**, and **polymorphism** in Java (OOP).
 
-   Calculation rules:
+## How it works
 
-Taxpayer	Rule
-Individual (Individuals)	Annual income below 20,000: 15% tax. Annual income of 20,000 or more: 25% tax. Then 50% of the health expenditures is deducted. The tax is never negative (the minimum is 0).
-Company (Company)	16% of the annual income. With more than 10 employees, the rate drops to 14%.
+You enter the number of taxpayers and, for each one, their type, name, annual income, and additional information. The program calculates each taxpayer's tax and displays the total amount collected.
 
-   Concepts applied:
+The tax rules depend on the taxpayer type:
 
-Abstract class: TaxPayer represents a generic taxpayer. It cannot be instantiated, because each type of taxpayer calculates tax in its own way.
-Abstract method: tax() is declared in TaxPayer with no implementation, and the subclasses are required to implement it.
-Inheritance: Individuals and Company use extends TaxPayer and reuse nome and rendaAnual, calling the superclass constructor with super(...).
-Overriding (@Override): each subclass provides its own tax().
-Polymorphism: Program stores everything in a List<TaxPayer> and calls tax() without knowing whether the object is an individual or a company. Each object runs its own version of the method.
-Encapsulation: attributes are private and accessed through getters and setters.
+- **Individuals:** Pay 15% tax on annual income below $20,000, or 25% on income of $20,000 or more. Then, 50% of healthcare expenses is deducted from the tax. The final tax cannot be negative.
+- **Companies:** Pay 16% tax on annual income. For companies with more than 10 employees, the rate drops to 14%.
 
-  Project structure:
-  
-inheritance-polymorphism/
+## Example
 
-├── TaxPayer.java     # abstract class (nome, rendaAnual, tax())
+```text
+Enter the number of tax payers: 3
 
-├── Individuals.java  # individual taxpayer (gastosComSaude)
+Tax payer #1 data:
+Individual or company (i/c)? i
+Name: Alex
+Anual income: 50000.00
+Health expenditures: 2000.00
 
-├── Company.java      # company taxpayer (numeroDoFuncionario)
+Tax payer #2 data:
+Individual or company (i/c)? c
+Name: Acme
+Anual income: 400000.00
+Number of employees: 25
 
-└── Program.java      # main class (input and output)
+Tax payer #3 data:
+Individual or company (i/c)? c
+Name: Tech
+Anual income: 30000.00
+Number of employees: 5
 
-   Class diagram:
-   
-1. abstract
-TaxPayer
--String nome
--double rendaAnual
-+tax() : double
-2. Individuals
--double gastosComSaude
-+tax() : double
-3. Company
--Integer numeroDoFuncionario
-+tax() : double
-Polymorphism in the code
-
-The snippet below, from Program, is the core of the exercise:
-
-List<TaxPayer> list = new ArrayList<TaxPayer>();
-
-list.add(new Individuals(name, anualIncome, he));
-list.add(new Company(name, anualIncome, numberOfEmployees));
-
-for (TaxPayer tp : list) {
-    System.out.println(tp.getNome() + ": $" + String.format(" %.2f", tp.tax()));
-}
-
-The list holds TaxPayer references, but the objects are Individuals or Company. When tp.tax() is called, Java decides at runtime which version of the method to run, based on the actual type of the object.
-
-Example run
-
-Inputs used in this example:
-
-#	Type	Name	Annual income	Health expenditures / Employees
-1	Individual	Alex	50000.00	2000.00
-2	Company	Acme	400000.00	25 employees
-3	Company	Tech	30000.00	5 employees
-
-Output:
-
-Taxes Paid:
+TAXES PAID:
 Alex: $ 11500.00
 Acme: $ 56000.00
 Tech: $ 4800.00
 
- Total Taxes: $ 72300.00
+TOTAL TAXES: $ 72300.00
+```
 
-Checking the math:
+## Project structure
 
-Alex: 25% of 50000 = 12500, minus 50% of 2000 (1000) = 11500
-Acme: more than 10 employees, so 14% of 400000 = 56000
-Tech: 10 employees or fewer, so 16% of 30000 = 4800
+```text
+tax-calculator/
+├── TaxPayer.java       # abstract base class
+├── Individuals.java    # individual taxpayer and healthcare deduction
+├── Company.java        # company taxpayer and employee-based tax rate
+└── Program.java        # console entry point
+```
 
-   How to run:
+## The design idea
 
-Requirement: the JDK (Java Development Kit) installed.
+`TaxPayer` is an abstract class that defines the common structure for all taxpayers. It declares the `tax()` method, which each subclass implements according to its own tax rules.
 
-Clone the repository:
-bash
-   git clone https://github.com/MicaelMoras/inheritance-polymorphism.git
-   
-With IntelliJ IDEA: open the folder, find the Program class and run its main method. From the terminal: inside the project folder, run:
+```java
+public abstract class TaxPayer {
+    private String nome;
+    private Double rendaAnual;
 
-bash
+    public abstract double tax();
+}
+```
 
-   javac -d out TaxPayer.java Company.java Individuals.java Program.java
-   java -cp out taxcalculator.Program
-   
-Enter the number of taxpayers and, for each one, the type (i for individual, c for company), the name, the annual income and the extra data (health expenditures or number of employees).
+Both `Individuals` and `Company` extend `TaxPayer` and override the `tax()` method.
 
-Note: the name is read with Scanner.next(), so type it without spaces (for example, Acme or John).
+The program stores different taxpayer objects in a single list and calculates their taxes through polymorphism:
 
-Technologies
-Java
+```java
+List<TaxPayer> list = new ArrayList<>();
 
-Author
+list.add(new Individuals(name, annualIncome, healthExpenses));
+list.add(new Company(name, annualIncome, numberOfEmployees));
 
-Micael — @MicaelMoras
+for (TaxPayer taxpayer : list) {
+    System.out.println(taxpayer.getNome() + ": " + taxpayer.tax());
+}
+```
 
-GitHub: github.com/MicaelMoras
+The `Program` class does not need to know how each taxpayer calculates their taxes. Java selects the appropriate `tax()` implementation at runtime based on the actual object type.
 
-LinkedIn: https://www.linkedin.com/in/micael-moras-ab70b036b/
+This keeps the calculation rules specific to each class while allowing the program to handle all taxpayers through the same abstraction.
+
+## Running
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/MicaelMoras/tax-calculator.git
+   ```
+
+2. Open the project in IntelliJ IDEA.
+
+3. Run `Program.java` and follow the prompts in the console.
+
+Requires a JDK (Java 8 or higher).
+
+**Note:** Names must be entered without spaces because the program reads them using `Scanner.next()`.
+
+## Technologies
+
+- Java
+- Object-Oriented Programming (OOP)
+
+## Author
+
+**Micael Moras**
+
+- GitHub: [github.com/MicaelMoras](https://github.com/MicaelMoras)
+- LinkedIn: [linkedin.com/in/micael-moras-ab70b036b](https://www.linkedin.com/in/micael-moras-ab70b036b/)
+
