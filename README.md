@@ -1,4 +1,4 @@
- # Tax Calculator
+# Tax Calculator
 
 Java application that calculates the taxes paid by individuals and companies based on their annual income, healthcare expenses, and number of employees.
 
@@ -16,75 +16,92 @@ The tax rules depend on the taxpayer type:
 ## Example
 
 ```text
-Enter the number of tax payers: 3
+Enter the number of taxpayers:
+3
 
-Tax payer #1 data:
-Individual or company (i/c)? i
-Name: Alex
-Anual income: 50000.00
-Health expenditures: 2000.00
+Taxpayer #1 data:
+Individual or company (i/c)?
+i
+Name:
+Alex
+Annual income:
+50000.00
+Health expenditures:
+2000.00
 
-Tax payer #2 data:
-Individual or company (i/c)? c
-Name: Acme
-Anual income: 400000.00
-Number of employees: 25
+Taxpayer #2 data:
+Individual or company (i/c)?
+c
+Name:
+Acme
+Annual income:
+400000.00
+Number of employees:
+25
 
-Tax payer #3 data:
-Individual or company (i/c)? c
-Name: Tech
-Anual income: 30000.00
-Number of employees: 5
+Taxpayer #3 data:
+Individual or company (i/c)?
+c
+Name:
+Tech
+Annual income:
+30000.00
+Number of employees:
+5
 
-TAXES PAID:
+Taxes Paid:
 Alex: $ 11500.00
 Acme: $ 56000.00
 Tech: $ 4800.00
 
-TOTAL TAXES: $ 72300.00
+Total Taxes: $ 72300.00
 ```
 
 ## Project structure
 
 ```text
 tax-calculator/
-├── TaxPayer.java       # abstract base class
-├── Individuals.java    # individual taxpayer and healthcare deduction
-├── Company.java        # company taxpayer and employee-based tax rate
-└── Program.java        # console entry point
+└── src/
+    └── taxcalculator/
+        ├── TaxPayer.java    # abstract base class
+        ├── Individuals.java # individual tax calculation
+        ├── Company.java     # company tax calculation
+        └── Program.java     # console entry point
 ```
 
 ## The design idea
 
-`TaxPayer` is an abstract class that defines the common structure for all taxpayers. It declares the `tax()` method, which each subclass implements according to its own tax rules.
+`TaxPayer` is an abstract class that defines the common attributes and behavior shared by all taxpayers. Its abstract `tax()` method requires each subclass to implement its own tax calculation.
 
 ```java
 public abstract class TaxPayer {
     private String nome;
-    private Double rendaAnual;
+    private double rendaAnual;
 
     public abstract double tax();
 }
 ```
 
-Both `Individuals` and `Company` extend `TaxPayer` and override the `tax()` method.
+Both `Individuals` and `Company` extend `TaxPayer` and override the `tax()` method with their specific calculation rules.
 
-The program stores different taxpayer objects in a single list and calculates their taxes through polymorphism:
+The program stores different taxpayer objects in a single list:
 
 ```java
-List<TaxPayer> list = new ArrayList<>();
+List<TaxPayer> list = new ArrayList<TaxPayer>();
 
-list.add(new Individuals(name, annualIncome, healthExpenses));
-list.add(new Company(name, annualIncome, numberOfEmployees));
+list.add(new Individuals(name, anualIncome, he));
+list.add(new Company(name, anualIncome, numberOfEmployees));
 
-for (TaxPayer taxpayer : list) {
-    System.out.println(taxpayer.getNome() + ": " + taxpayer.tax());
+for (TaxPayer tp : list) {
+    System.out.println(
+        tp.getNome() + ": $" + String.format(" %.2f", tp.tax())
+    );
 }
 ```
 
-The `Program` class does not need to know how each taxpayer calculates their taxes. Java selects the appropriate `tax()` implementation at runtime based on the actual object type.
+Although the list stores references of type `TaxPayer`, each object executes its own implementation of `tax()` at runtime. This is **polymorphism**: the program can calculate taxes without needing to know the specific taxpayer type in advance.
 
-This keeps the calculation rules specific to each class while allowing the program to handle all taxpayers through the same abstraction.
+The shared attributes are encapsulated in the base class, while each subclass is responsible for its own tax rules.
 
 ## Running
 
@@ -100,7 +117,7 @@ This keeps the calculation rules specific to each class while allowing the progr
 
 Requires a JDK (Java 8 or higher).
 
-**Note:** Names must be entered without spaces because the program reads them using `Scanner.next()`.
+**Note:** Names must be entered without spaces because the program uses `Scanner.next()`.
 
 ## Technologies
 
