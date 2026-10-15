@@ -1,4 +1,4 @@
-package HherancaePpolimofirmo;
+package taxcalculator;
 
 public class Individuals extends TaxPayer {
     private double gastosComSaude;

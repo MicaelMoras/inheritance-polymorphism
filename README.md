@@ -96,7 +96,7 @@ With IntelliJ IDEA: open the folder, find the Program class and run its main met
 bash
 
    javac -d out TaxPayer.java Company.java Individuals.java Program.java
-   java -cp out HherancaePpolimofirmo.Program
+   java -cp out taxcalculator.Program
    
 Enter the number of taxpayers and, for each one, the type (i for individual, c for company), the name, the annual income and the extra data (health expenditures or number of employees).
 

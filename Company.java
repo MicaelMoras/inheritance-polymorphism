@@ -1,4 +1,4 @@
-package HherancaePpolimofirmo;
+package taxcalculator;
 
 public class Company extends TaxPayer{
    private Integer numeroDoFuncionario;

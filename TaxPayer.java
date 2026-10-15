@@ -1,4 +1,4 @@
-package HherancaePpolimofirmo;
+package taxcalculator;
 
 public abstract class TaxPayer {
      private String nome;

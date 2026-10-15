@@ -1,4 +1,4 @@
-package HherancaePpolimofirmo;
+package taxcalculator;
 
 
 import java.util.ArrayList;
